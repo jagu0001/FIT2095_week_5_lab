@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>Add tasks</h1>
+    </body>
+    <form action="/newTaskData" method="POST">
+        Task Name: 
+        <input type="text" name="taskName"> 
+        <br><br>
+
+        Task Due Date: 
+        <input type="date" name="taskDueDate">
+        <br><br>
+
+        Task Description: 
+        <input type="text" name="taskDescription">
+        <br><br>
+
+        <button type="submit">Add Task</button>
+    </form>
+    <a href="/">Home</a>
+</html>

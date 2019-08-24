@@ -1,0 +1,23 @@
+h1 {
+    color: #f506f5
+}
+
+body {
+    background-color: blue
+}
+
+a {
+    font-size: 30px;
+    padding: 10px;
+    color: red;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 10px solid rgb(255, 255, 0);
+    width: 50%;
+    color: orange;
+}
