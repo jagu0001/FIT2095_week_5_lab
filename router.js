@@ -14,7 +14,9 @@ router.get("/newTask", function(req, res){
 router.post("/newTaskData", function(req, res){
     let taskItem = new Task.Item(req.body.taskName, req.body.taskDueDate, req.body.taskDescription);
     taskDB.addTask(taskItem);
-    res.send("Task added!"); //should redirect to another page/pop-up message instead
+    res.render("listTasks.html", {
+        taskList: taskDB.list
+    });
 });
 
 router.get("/listTasks", function(req, res){

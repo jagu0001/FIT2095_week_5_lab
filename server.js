@@ -1,10 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const ejs = require("ejs");
 let router = require("./router.js");
 
 let app = express();
 
-app.engine("html", require("ejs").renderFile);
+app.engine("html", ejs.renderFile);
 app.set("view engine", "html");
 
 //static assets
