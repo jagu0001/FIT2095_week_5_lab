@@ -9,18 +9,30 @@
 
     <table>
         <tr>
-            <th>Name</td>
-            <th>Due Date</td>
-            <th>Description</td>
+            <th>Task ID</th>
+            <th>Name</th>
+            <th>Assign To</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Description</th>
         </tr>
 
         <% for (let i = 0; i < taskList.length; i++){ %>
         <tr>
             <td>
+                <%= taskList[i].taskID %>
+            </td>
+            <td>
                 <%= taskList[i].name %>
             </td>
             <td>
+                <%= taskList[i].assignTo %>
+            </td>
+            <td>
                 <%= taskList[i].date %>
+            </td>
+            <td>
+                <%= taskList[i].status %>
             </td>
             <td>
                 <%= taskList[i].description %>

@@ -1,9 +1,10 @@
 h1 {
-    color: #f506f5
+    color: lime;
 }
 
 body {
-    background-color: blue
+    background-color: blue;
+    color: orangered;
 }
 
 a {

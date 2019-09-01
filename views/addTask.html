@@ -3,15 +3,26 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <h1>Add tasks</h1>
+        <h1>Add Tasks</h1>
     </body>
     <form action="/newTaskData" method="POST">
         Task Name: 
         <input type="text" name="taskName"> 
         <br><br>
 
+        Assign To:
+        <input type="text" name="assignTo">
+        <br><br>
+
         Task Due Date: 
         <input type="date" name="taskDueDate">
+        <br><br>
+
+        Task Status:
+        <select name="taskStatus">
+            <option value="InProgress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
         <br><br>
 
         Task Description: 
