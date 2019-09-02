@@ -64,9 +64,14 @@ router.post("/deleteTask", function(req, res){
 });
 
 
-router.post("deleteCompleted", function(req, res){
+router.get("/deleteCompletedPage", function(req, res){
+    res.sendFile(__dirname + "/views/deleteCompleted.html");
+})
+
+
+router.post("/deleteCompleted", function(req, res){
     let filter = {
-        taskStatus: "Completed"
+        status: "Completed"
     }
 
     db.collection(collectionName).deleteMany(filter);
