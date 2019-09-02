@@ -3,10 +3,9 @@ const Task = require("./taskList");
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
 
-const dbCollectionName = "Week-6-Task-List";
 let url = "mongodb://localhost:27017";
+const collectionName = "Week-6-Task-List";
 let db;
-
 
 MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client){
     if (err) throw err;
@@ -28,13 +27,13 @@ router.post("/newTaskData", function(req, res){
     let taskItem = new Task.Item(req.body.taskName, req.body.assignTo, 
         req.body.taskDueDate, req.body.taskStatus, req.body.taskDescription);
     
-    db.collection(dbCollectionName).insertOne(taskItem.toObj());
+    db.collection(collectionName).insertOne(taskItem.toObj());
     res.redirect("/listTasks");
 });
 
 
 router.get("/listTasks", function(req, res){
-    db.collection(dbCollectionName).find({}).toArray(function(err, result){
+    db.collection(collectionName).find({}).toArray(function(err, result){
         if(err) res.send("An error has occurred");
         res.render("listTasks.html", {
             taskList: result
@@ -49,17 +48,49 @@ router.get("/deleteTaskPage", function(req, res){
 
 
 router.post("/deleteTask", function(req, res){
-    
+    let idToDelete = parseInt(req.body.idToDelete);
+    let filter = {
+        taskID: idToDelete
+    };
+
+    db.collection(collectionName).deleteOne(filter, function(err, result){
+        if(result.deletedCount > 0){
+            res.redirect("/listTasks");
+        }
+        else{
+            res.send("Specified task not found");
+        } 
+    });
 });
 
 
 router.post("deleteCompleted", function(req, res){
+    let filter = {
+        taskStatus: "Completed"
+    }
 
+    db.collection(collectionName).deleteMany(filter);
+    res.redirect("/listTasks");
 });
 
 
-router.post("updateTask", function(req, res){
+router.get("/updateTaskPage", function(req, res){
+    res.sendFile(__dirname + "/views/updateTask.html");
+})
 
+
+router.post("/updateTask", function(req, res){
+    let updateID = parseInt(req.body.idToUpdate);
+    let newStatus = req.body.updateStatus;
+    let filter = {
+        taskID: updateID
+    };
+
+    db.collection(collectionName).updateOne(filter, {$set: { status: newStatus }}, {upsert: false}, 
+        function(err, result){
+            if(err) throw err;
+            res.redirect("/listTasks");
+    });
 });
 
 

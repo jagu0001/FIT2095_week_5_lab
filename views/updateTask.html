@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>Update Task By ID</h1>
+    </body>
+    <form action="/updateTask" method="POST">
+        Task ID:
+        <input type="text" name="idToUpdate"> 
+        <br><br>
+
+        Task Status:
+        <select name="updateStatus">
+            <option value="InProgress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+        <br><br>
+        
+        <button type="submit">Update Task</button>
+    </form>
+    <a href="/">Home</a>
+</html>
