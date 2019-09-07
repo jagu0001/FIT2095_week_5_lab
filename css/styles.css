@@ -3,14 +3,14 @@ h1 {
 }
 
 body {
-    background-color: blue;
-    color: orangered;
+    background-color: hotpink;
+    color: purple;
 }
 
 a {
-    font-size: 30px;
+    font-size: 20px;
     padding: 10px;
-    color: red;
+    color: blue;
 }
 
 table {
@@ -19,6 +19,5 @@ table {
 
 table, th, td {
     border: 10px solid rgb(255, 255, 0);
-    width: 50%;
-    color: orange;
+    color: green;
 }

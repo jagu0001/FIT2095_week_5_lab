@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-let router = require("./router.js");
+const mongoose = require("mongoose");
+const router = require("./router.js");
 
 let app = express();
 
@@ -20,4 +21,8 @@ app.use(bodyParser.json());
 
 app.use("/", router);
 
-app.listen(8000);
+let mongoURL = "mongodb://localhost:27017/Week-6-Task-List";
+mongoose.connect(mongoURL).then(function(){
+    app.listen(8000);
+});
+

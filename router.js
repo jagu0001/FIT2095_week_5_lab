@@ -1,17 +1,5 @@
 const router = require("express").Router();
-const Task = require("./taskList");
-const mongodb = require("mongodb");
-const MongoClient = mongodb.MongoClient;
-
-let url = "mongodb://localhost:27017";
-const collectionName = "Week-6-Task-List";
-let db;
-
-MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client){
-    if (err) throw err;
-    db = client.db("FIT2095-Week-6-Workshop");
-});
-
+const TaskClass = require("./taskList");
 
 router.get("/", function(req, res){
     res.render("index.html");
@@ -23,21 +11,55 @@ router.get("/newTask", function(req, res){
 });
 
 
+router.get("/newDev", function(req, res){
+    res.render("addDev.html");
+})
+
+
 router.post("/newTaskData", function(req, res){
-    let taskItem = new Task.Item(req.body.taskName, req.body.assignTo, 
-        req.body.taskDueDate, req.body.taskStatus, req.body.taskDescription);
-    
-    db.collection(collectionName).insertOne(taskItem.toObj());
+    let name = req.body.taskName;
+    let devID = req.body.assignToDevID;
+    let dueDate = req.body.taskDueDate;
+    let status = req.body.taskStatus;
+    let description = req.body.taskDescription;
+
+    let task = new TaskClass.Task(name, devID, dueDate, status, description);
+    task.saveToDB();
     res.redirect("/listTasks");
 });
 
 
+router.post("/newDevData", function(req, res){
+    let name = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
+    };
+    let level = req.body.level;
+    let address = {
+        state: req.body.state,
+        suburb: req.body.suburb,
+        street: req.body.street,
+        unit: req.body.unit
+    };
+
+    let dev = new TaskClass.Developer(name, level, address);
+    dev.saveToDB();
+    res.redirect("/listDevs");
+});
+
+
+router.get("/listDevs", function(req, res){
+    let developers = TaskClass.Developer.find({});
+    developers.then(function(devArray){
+        res.render("listDevs.html", {devList: devArray}); 
+    });
+})
+
+
 router.get("/listTasks", function(req, res){
-    db.collection(collectionName).find({}).toArray(function(err, result){
-        if(err) res.send("An error has occurred");
-        res.render("listTasks.html", {
-            taskList: result
-        });
+    let tasks = TaskClass.Task.find({});
+    tasks.then(function(taskArray){
+        res.render("listTasks", {taskList: taskArray});
     })
 });
 
@@ -48,19 +70,9 @@ router.get("/deleteTaskPage", function(req, res){
 
 
 router.post("/deleteTask", function(req, res){
-    let idToDelete = parseInt(req.body.idToDelete);
-    let filter = {
-        taskID: idToDelete
-    };
-
-    db.collection(collectionName).deleteOne(filter, function(err, result){
-        if(result.deletedCount > 0){
-            res.redirect("/listTasks");
-        }
-        else{
-            res.send("Specified task not found");
-        } 
-    });
+    let taskID = req.body.idToDelete;
+    TaskClass.Task.deleteByID(taskID);
+    res.redirect("/listTasks");
 });
 
 
@@ -70,11 +82,7 @@ router.get("/deleteCompletedPage", function(req, res){
 
 
 router.post("/deleteCompleted", function(req, res){
-    let filter = {
-        status: "Completed"
-    }
-
-    db.collection(collectionName).deleteMany(filter);
+    TaskClass.Task.deleteCompleted();
     res.redirect("/listTasks");
 });
 
@@ -85,17 +93,10 @@ router.get("/updateTaskPage", function(req, res){
 
 
 router.post("/updateTask", function(req, res){
-    let updateID = parseInt(req.body.idToUpdate);
+    let taskID = req.body.idToUpdate;
     let newStatus = req.body.updateStatus;
-    let filter = {
-        taskID: updateID
-    };
-
-    db.collection(collectionName).updateOne(filter, {$set: { status: newStatus }}, {upsert: false}, 
-        function(err, result){
-            if(err) throw err;
-            res.redirect("/listTasks");
-    });
+    TaskClass.Task.updateStatus(taskID, newStatus);
+    res.redirect("/listTasks");
 });
 
 

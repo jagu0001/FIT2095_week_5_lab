@@ -11,7 +11,7 @@
         <tr>
             <th>Task ID</th>
             <th>Name</th>
-            <th>Assign To</th>
+            <th>Assign To (Dev ID)</th>
             <th>Due Date</th>
             <th>Status</th>
             <th>Description</th>
@@ -20,7 +20,7 @@
         <% for (let i = 0; i < taskList.length; i++){ %>
         <tr>
             <td>
-                <%= taskList[i].taskID %>
+                <%= taskList[i]._id %>
             </td>
             <td>
                 <%= taskList[i].name %>
@@ -29,7 +29,7 @@
                 <%= taskList[i].assignTo %>
             </td>
             <td>
-                <%= taskList[i].date %>
+                <%= taskList[i].dueDate %>
             </td>
             <td>
                 <%= taskList[i].status %>
@@ -43,5 +43,4 @@
     </table>
     <br>
     <a href="/">Home</a>
-
 </html>
